@@ -2,10 +2,12 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const { randomBytes } = require("crypto")
+const cors = require("cors");
 
 // configuration and instantiation
-const app = express()
-app.use(bodyParser.json())
+const app = express();
+app.use(bodyParser.json());
+app.use(cors());
 
 // In memory datastructure to hold comments
 commentsByPostId = {}

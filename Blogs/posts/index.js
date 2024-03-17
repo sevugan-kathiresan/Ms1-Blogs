@@ -2,10 +2,12 @@
 const express = require("express");
 const bodyParser = require('body-parser'); // helps with parsing the request and response
 const { randomBytes } = require("crypto");
+const cors = require('cors');
 
 // Creating an app instance
 const app = express();
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(cors());
 
 // we are not using database for this app so we are creating a JSON object that can hold the posts
 const posts = {};
