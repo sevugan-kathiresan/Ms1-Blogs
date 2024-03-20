@@ -10,7 +10,7 @@ const PostCreate = ()=>{
         await axios.post('http://localhost:4000/post', {
             title
         });
-        
+        // Clearing out the input field once the user submitted
         setTitle("");
     };
 
