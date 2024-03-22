@@ -21,7 +21,7 @@ app.get("/post/:id/comments", async (req, res) => {
 })
 
 // Route to post a comment for a particular post
-app.post("/post/:id/comment", (req, res) => {
+app.post("/post/:id/comment", async (req, res) => {
     const commentId = randomBytes(4).toString('hex'); // id for comment
     const { content } = req.body; // Extract the content of the  body
 
