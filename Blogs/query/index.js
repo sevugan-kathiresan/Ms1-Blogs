@@ -30,7 +30,7 @@ const posts = {}
 // }
 
 // Route to send all the post and comments related information to the client
-app.get("/events", (req, res) => {
+app.get("/posts", (req, res) => {
     
     res.send(posts);
 });
