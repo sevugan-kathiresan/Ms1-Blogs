@@ -36,13 +36,19 @@ app.post('/post', async (req, res) => {
         data : {
             id, title
         }
-    })
+    });
     // Sending the response
     res.status(201).send(posts[id]) // 201 - new resource created
 });
 
+// Route to listen for broadcast from the event bus
+app.post("/events", (req, res) => {
+    console.log("Received Event", req.body.type);
+    res.send({});
+})
+
 app.listen(4000, () => {
-    console.log("Listening on 4000")
+    console.log("Listening on 4000");
 });
 
 

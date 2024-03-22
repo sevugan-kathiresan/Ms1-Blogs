@@ -18,7 +18,7 @@ commentsByPostId = {}
 // Route to get all the comments associate with a post
 app.get("/post/:id/comments", async (req, res) => {
     res.send(commentsByPostId[req.params.id] || [])
-})
+});
 
 // Route to post a comment for a particular post
 app.post("/post/:id/comment", async (req, res) => {
@@ -40,9 +40,15 @@ app.post("/post/:id/comment", async (req, res) => {
         }
     });
 
-    res.status(201).send(comments)
-})
+    res.status(201).send(comments);
+});
+
+// Route to listen for broadcast from the event bus
+app.post("/events", (req, res) => {
+    console.log("Received Event", req.body.type);
+    res.send({});
+});
 
 app.listen(4001, ()=> {
     console.log("Listening on 4001")
-})
+});
