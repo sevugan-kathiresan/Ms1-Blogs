@@ -27,7 +27,7 @@ app.post("/post/:id/comment", async (req, res) => {
 
     // check if any comments already exists for that post
     const comments = commentsByPostId[req.params.id] || []; // if undefined give me an empty array && req.params.id - lets us extract the URL params
-    comments.push({ id: commentId, content}) // Appending the data to the extracted array
+    comments.push({ id: commentId, content, status: "pending" }) // Appending the data to the extracted array || do note that we are adding a default for status of pending
     commentsByPostId[req.params.id] = comments // Assigning back to our in memory data structure
 
     // emit the event
@@ -36,7 +36,8 @@ app.post("/post/:id/comment", async (req, res) => {
         data : {
             id : commentId,
             content,
-            postId: req.params.id
+            postId: req.params.id,
+            status: "pending"
         }
     });
 

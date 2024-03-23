@@ -46,9 +46,9 @@ app.post("/events", (req, res) => {
     }
 
     if (type === "commentCreated"){
-        const { id, content, postId } = data;
+        const { id, content, postId, status } = data;
 
-        posts[postId].comments.push({ id, content });
+        posts[postId].comments.push({ id, content, status });
     }
 
     //Print out the current state of out In memory posts data structure
