@@ -51,6 +51,21 @@ app.post("/events", (req, res) => {
         posts[postId].comments.push({ id, content, status });
     }
 
+    if (type === "commentUpdated"){
+        console.log(data)
+        const {id, postId, status, content} = data;
+
+        // Find the appropriate post
+        const post = posts[postId];
+        // Find the appropriate comment
+        const comment = post.comments.find(comment => {
+            return comment.id === id
+        });
+
+        comment.status = status;
+        comment.content = content;
+    }
+
     //Print out the current state of out In memory posts data structure
     console.log(posts)
     res.send({})
