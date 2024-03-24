@@ -5,9 +5,11 @@ const axios = require('axios');
 const app = express();
 app.use(bodyParser.json());
 
+const events = [];
+
 app.post('/events', (req, res) => {
     const event = req.body;
-
+    events.push(event);
     // Since we are not using aync await syntax it is best to catch errors using .catch() statement
     // In case of async await we can use try{}catch{} block syntax
     // Example for the try catch syntax can be found in the index file of moderation service
@@ -18,6 +20,10 @@ app.post('/events', (req, res) => {
 
     res.send({status:'OK'})
 });
+
+app.get('/events', (req, res) => {
+    res.send(events);
+})
 
 app.listen(4005, ()=> {
     console.log("Listening on 4005")

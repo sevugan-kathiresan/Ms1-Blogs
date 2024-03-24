@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const axios = require("axios");
 
 const app = express();
 app.use(bodyParser.json());
@@ -8,6 +9,35 @@ app.use(cors());
 
 // InMemory DataStructure to hold the posts and comments
 const posts = {}
+
+const handleEvent = (type, data) => {
+    if (type === "postCreated") {
+        const { id, title} = data;
+
+        posts[id] = {id, title, comments: []};
+    }
+
+    if (type === "commentCreated"){
+        const { id, content, postId, status } = data;
+
+        posts[postId].comments.push({ id, content, status });
+    }
+
+    if (type === "commentUpdated"){
+        console.log(data)
+        const {id, postId, status, content} = data;
+
+        // Find the appropriate post
+        const post = posts[postId];
+        // Find the appropriate comment
+        const comment = post.comments.find(comment => {
+            return comment.id === id
+        });
+
+        comment.status = status;
+        comment.content = content;
+    }
+}
 
 // The data structure will look like this
 // posts === {
@@ -37,42 +67,23 @@ app.get("/posts", (req, res) => {
 
 // Route to receive the events emitted from the event bus
 app.post("/events", (req, res) => {
-    const { type, data } = req.body
+    const { type, data } = req.body;
 
-    if (type === "postCreated") {
-        const { id, title} = data;
+    handleEvent(type, data);
 
-        posts[id] = {id, title, comments: []};
-    }
-
-    if (type === "commentCreated"){
-        const { id, content, postId, status } = data;
-
-        posts[postId].comments.push({ id, content, status });
-    }
-
-    if (type === "commentUpdated"){
-        console.log(data)
-        const {id, postId, status, content} = data;
-
-        // Find the appropriate post
-        const post = posts[postId];
-        // Find the appropriate comment
-        const comment = post.comments.find(comment => {
-            return comment.id === id
-        });
-
-        comment.status = status;
-        comment.content = content;
-    }
-
-    //Print out the current state of out In memory posts data structure
-    console.log(posts)
     res.send({})
 
 });
 
-app.listen(4002, () => {
+app.listen(4002, async () => {
     console.log("Listening on 4002");
-})
+
+    const res = await axios.get("http://localhost:4005/events");
+
+    for (let event of res.data){
+        console.log("Processing event:", event.type);
+        handleEvent(event.type, event.data);
+    }
+
+});
 
