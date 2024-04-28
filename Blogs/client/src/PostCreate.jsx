@@ -12,6 +12,7 @@ const PostCreate = ()=>{
         });
         // Clearing out the input field once the user submitted
         setTitle("");
+        window.location.reload()
     };
 
     return(

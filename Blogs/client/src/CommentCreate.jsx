@@ -12,6 +12,7 @@ const CommentCreate = ({ postId }) => {
         });
         // Clearing out the input field once the user submitted
         setContent('');
+        window.location.reload()
     }
 
     return(
